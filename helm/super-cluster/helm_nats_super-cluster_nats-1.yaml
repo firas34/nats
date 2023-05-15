@@ -1,0 +1,73 @@
+nats:
+  image: nats:alpine
+  pullPolicy: Always
+
+  resources:
+    requests:
+      cpu: 8
+      memory: 4Gi
+    limits:
+      cpu: 10
+      memory: 6Gi
+  
+  limits:
+    maxConnections: 5000
+
+  jetstream:
+    enabled: true
+
+    fileStorage:
+      enabled: true
+      size: 3Gi
+      storageDirectory: /data/
+      storageClassName: standard
+
+cluster:
+  enabled: true
+  name: js-nats-cluster-nats-1
+  replicas: 3
+
+  authorization:
+    user: admin
+    password: password
+    timeout: 0.5
+
+gateway:
+  enabled: true
+  name: js-nats-cluster-nats-1
+
+  gateways:
+  - name: js-nats-cluster-nats-1
+    url: nats://nats-nats-1.nats-1.svc.cluster.local:7522
+  - name: js-nats-cluster-nats-2
+    url: nats://nats-nats-2.nats-2.svc.cluster.local:7522
+  - name: js-nats-cluster-nats-3
+    url: nats://nats-nats-3.nats-3.svc.cluster.local:7522
+
+exporter:
+  pullPolicy: IfNotPresent
+  enabled: true
+  portName: csho-metrics
+  containerPort: 24231
+
+auth:
+  enabled: true
+  systemAccount: "SYS"
+  basic:
+    accounts:
+      SYS:
+        users:
+        - user: ali
+          pass: ali
+
+natsbox:
+  enabled: true
+  image: docker-production-cloudshop/amakke/nats/nats-box:v0.25.3
+  pullPolicy: IfNotPresent
+  replicas: 10
+  resources:
+    requests:
+      cpu: 3
+      memory: 500Mi
+    limits:
+      memory: 800Mi
