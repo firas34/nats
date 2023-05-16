@@ -38,11 +38,11 @@ gateway:
 
   gateways:
   - name: js-nats-cluster-nats-1
-    url: nats://nats-nats-1.nats-1.svc.cluster.local:7522
+    url: nats://nats-1.nats-1.svc.cluster.local:7522
   - name: js-nats-cluster-nats-2
-    url: nats://nats-nats-2.nats-2.svc.cluster.local:7522
+    url: nats://nats-2.nats-2.svc.cluster.local:7522
   - name: js-nats-cluster-nats-3
-    url: nats://nats-nats-3.nats-3.svc.cluster.local:7522
+    url: nats://nats-3.nats-3.svc.cluster.local:7522
 
 exporter:
   pullPolicy: IfNotPresent
@@ -57,8 +57,8 @@ auth:
     accounts:
       SYS:
         users:
-        - user: ali
-          pass: ali
+        - user: cinst
+          pass: cinst
 
 natsbox:
   enabled: true
